@@ -5,6 +5,8 @@ import { DataTable } from "@/components/ui/table/data-table";
 import { useDebounceValue } from "usehooks-ts";
 
 import {
+	ArrowDown,
+	ArrowUp,
 	ChartColumnIncreasing,
 	Download,
 	Expand,
@@ -196,7 +198,24 @@ const Products = () => {
 
 							{
 								accessorKey: "title",
-								header: "Title",
+								header: ({ column }) => (
+									<Button
+										variant="ghost"
+										className="w-fit cursor-pointer select-none bg-transparent text-black hover:bg-transparent  "
+										onClick={() =>
+											column.toggleSorting(column.getIsSorted() === "asc")
+										}
+										icon={
+											column.getIsSorted() === "asc" ? (
+												<ArrowUp />
+											) : (
+												<ArrowDown />
+											)
+										}
+									>
+										{t("Title")}
+									</Button>
+								),
 								cell: ({ row }) => {
 									const value = row?.original?.title;
 									return (
@@ -222,7 +241,25 @@ const Products = () => {
 							// price
 							{
 								accessorKey: "price",
-								header: "Price",
+								header: ({ column }) => (
+									<Button
+										variant="ghost"
+										className="w-fit cursor-pointer select-none bg-transparent text-black hover:bg-transparent  "
+										onClick={() =>
+											column.toggleSorting(column.getIsSorted() === "asc")
+										}
+										icon={
+											column.getIsSorted() === "asc" ? (
+												<ArrowUp />
+											) : (
+												<ArrowDown />
+											)
+										}
+									>
+										{t("Price")}
+									</Button>
+								),
+
 								cell: ({ row }) => {
 									const value = row?.original?.price;
 									return (

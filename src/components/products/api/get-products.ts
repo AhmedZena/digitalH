@@ -5,8 +5,11 @@ import type { QueryConfig } from "@/lib/react-query";
 import type { TProductEntity } from "../types";
 import { useProductStore } from "@/store/products.store";
 
-export const getProducts = (): Promise<TProductEntity[]> => {
+export const getProducts = ({
+	searchedTitle,
+}: { searchedTitle?: string }): Promise<TProductEntity[]> => {
 	const { page, pageSize, filters } = useProductStore.getState();
+	console.log(searchedTitle);
 	return api.get("/products", {
 		params: {
 			// currentPage: page,
@@ -15,24 +18,29 @@ export const getProducts = (): Promise<TProductEntity[]> => {
 			// ?offset=0&limit=10
 			offset: (page - 1) * pageSize,
 			limit: pageSize,
+			title: searchedTitle,
 		},
 	});
 };
 
-export const getProductsQueryOptions = () => {
+export const getProductsQueryOptions = (searchedTitle?: string) => {
 	return queryOptions({
-		queryKey: ["productGrid", useProductStore.getState()],
-		queryFn: getProducts,
+		queryKey: ["productGrid", useProductStore.getState(), searchedTitle],
+		queryFn: () => getProducts({ searchedTitle }),
 	});
 };
 
 type UseProductsOptions = {
 	queryConfig?: QueryConfig<typeof getProductsQueryOptions>;
+	searchedTitle?: string;
 };
 
-export const useProducts = ({ queryConfig }: UseProductsOptions = {}) => {
+export const useProducts = ({
+	queryConfig,
+	searchedTitle,
+}: UseProductsOptions = {}) => {
 	return useQuery({
-		...getProductsQueryOptions(),
+		...getProductsQueryOptions(searchedTitle),
 		...queryConfig,
 	});
 };

@@ -2,6 +2,8 @@
 import TextEllipsis from "@/components/ui/TextEllipsis";
 import { Button } from "@/components/ui/button/button";
 import { DataTable } from "@/components/ui/table/data-table";
+import { useDebounceValue } from "usehooks-ts";
+
 import {
 	ChartColumnIncreasing,
 	Download,
@@ -26,10 +28,15 @@ import type { confirmModalProps } from "@/types/confirm-modal-types";
 import Zoom from "react-medium-image-zoom";
 import { useDeleteProduct } from "@/components/products/api/delete-product";
 import { showToast } from "@/components/ui/toast/toastify";
+import { Input } from "@/components/ui/input";
 
 const Products = () => {
 	const { t } = useTranslation();
-	const { data, isLoading, isFetching, refetch } = useProducts();
+	const [searchByTitle, setSearchByTitle] = useState<string>("");
+	const [debouncedValue] = useDebounceValue(searchByTitle, 500);
+	const { data, isLoading, isFetching, refetch } = useProducts({
+		searchedTitle: debouncedValue,
+	});
 	const { close, open, isOpen } = useDisclosure();
 
 	const { page, setPage, pageSize, totalPages } = useProductStore();
@@ -60,6 +67,18 @@ const Products = () => {
 			<div className="mx-auto mt-6 flex w-11/12 flex-col rounded-xl border-2 px-2 pt-6 md:w-full">
 				<div className="mb-4 flex w-full flex-wrap items-center justify-between gap-2 px-4 md:items-center md:justify-between md:gap-0">
 					<h2 className="H7 w-fit text-dark">{t("Products")}</h2>
+
+					{/* input search by titlte */}
+					<Input
+						onChange={(e) => {
+							setSearchByTitle(e.target.value);
+							setPage(1);
+						}}
+						value={searchByTitle}
+						placeholder={t("Search by title")}
+						className="w-full"
+					/>
+
 					<div className="flex w-fit justify-between gap-4 md:h-14 md:justify-end">
 						<div className="flex h-auto w-full flex-wrap gap-4">
 							<Button

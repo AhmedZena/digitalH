@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useProducts } from "@/components/products/api/get-products";
-import { useProductStore } from "@/store/products.store";
+import { ProductsFiltersSchema, useProductStore } from "@/store/products.store";
 import { Spinner } from "@/components/ui/spinner";
 import { exportToExcel } from "@/lib/export-excel";
 import { useDisclosure } from "@/hooks/use-disclosure";
@@ -29,6 +29,8 @@ import Zoom from "react-medium-image-zoom";
 import { useDeleteProduct } from "@/components/products/api/delete-product";
 import { showToast } from "@/components/ui/toast/toastify";
 import { Input } from "@/components/ui/input";
+import { useCategories } from "@/components/categories/api/get-categories";
+import Filter from "@/components/ui/filter";
 
 const Products = () => {
 	const { t } = useTranslation();
@@ -38,8 +40,18 @@ const Products = () => {
 		searchedTitle: debouncedValue,
 	});
 	const { close, open, isOpen } = useDisclosure();
+	const { data: categories, isLoading: catLoading } = useCategories();
 
-	const { page, setPage, pageSize, totalPages } = useProductStore();
+	const {
+		page,
+		setPage,
+		pageSize,
+		totalPages,
+		setFilters,
+		resetFilters,
+		filters,
+	} = useProductStore();
+	console.log("filters", filters);
 	// Single confirm modal state
 	const [modalConfig, setModalConfig] = useState<
 		(confirmModalProps & { productId?: number }) | null
@@ -70,7 +82,6 @@ const Products = () => {
 				<div className="mb-4 flex w-full flex-wrap items-center justify-between gap-2 px-4 md:items-center md:justify-between md:gap-0">
 					<h2 className="H7 w-fit text-dark">{t("Products")}</h2>
 
-					{/* input search by titlte */}
 					<Input
 						onChange={(e) => {
 							setSearchByTitle(e.target.value);
@@ -117,6 +128,42 @@ const Products = () => {
 				</div>
 
 				<div className="px-4">
+					<Filter
+						filters={
+							[
+								{
+									label: t("Price"),
+									inputName: "price",
+									placeholder: t("Price"),
+									type: "number",
+								},
+								{
+									label: t("Category"),
+									inputName: "categoryId",
+									placeholder: t("Select Category"),
+									type: "select",
+									isLoading: catLoading,
+									options: categories?.map((cat) => ({
+										label: cat.name,
+										value: cat.id.toString(),
+									})),
+								},
+							] as Array<{
+								label: string;
+								inputName: string;
+								placeholder: string;
+								type: string;
+								isLoading?: boolean;
+								options?: Array<{ label: string; value: string }>;
+							}>
+						}
+						setFilters={setFilters}
+						resetFilters={resetFilters}
+						schema={ProductsFiltersSchema}
+						key="products-filters"
+						setPage={setPage}
+						// type="sidebar"
+					/>
 					<DataTable
 						columns={[
 							{

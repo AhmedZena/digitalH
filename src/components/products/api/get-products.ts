@@ -12,10 +12,7 @@ export const getProducts = ({
 	console.log(searchedTitle);
 	return api.get("/products", {
 		params: {
-			// currentPage: page,
-			// perPage: pageSize,
-			// ...filters,
-			// ?offset=0&limit=10
+			...filters,
 			offset: (page - 1) * pageSize,
 			limit: pageSize,
 			title: searchedTitle,
@@ -25,6 +22,7 @@ export const getProducts = ({
 
 export const getProductsQueryOptions = (searchedTitle?: string) => {
 	const { page, pageSize, filters } = useProductStore.getState();
+	console.log(filters);
 
 	return queryOptions({
 		queryKey: ["productGrid", page, pageSize, filters, searchedTitle],

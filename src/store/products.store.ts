@@ -2,15 +2,8 @@ import { create } from "zustand";
 import { z } from "zod";
 
 export type ProductFilters = {
-	userNumber?: string; //done
-	carType?: string;
-	status?: "active" | "parked";
-	balanceDate?: string | Date;
-	driver_phone?: string;
-	driver_name?: string;
-	car_model?: string;
-	car_brand?: string;
-	car_number?: string;
+	price?: string;
+	categoryId?: string;
 };
 
 interface CarStore {
@@ -48,9 +41,6 @@ export const useProductStore = create<CarStore>((set) => ({
 
 // filteration schema
 export const ProductsFiltersSchema = z.object({
-	driver_name: z.string().optional(),
-	car_brand: z.string().optional(),
-	car_model: z.string().optional(),
-	status: z.string().optional(),
-	balanceDate: z.string().optional(),
+	price: z.string().optional(),
+	categoryId: z.string().optional(),
 });

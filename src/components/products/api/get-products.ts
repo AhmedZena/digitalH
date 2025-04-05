@@ -24,8 +24,10 @@ export const getProducts = ({
 };
 
 export const getProductsQueryOptions = (searchedTitle?: string) => {
+	const { page, pageSize, filters } = useProductStore.getState();
+
 	return queryOptions({
-		queryKey: ["productGrid", useProductStore.getState(), searchedTitle],
+		queryKey: ["productGrid", page, pageSize, filters, searchedTitle],
 		queryFn: () => getProducts({ searchedTitle }),
 	});
 };

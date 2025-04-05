@@ -22,13 +22,15 @@ import { useProductStore } from "@/store/products.store";
 import { showToast } from "../ui/toast/toastify";
 import { addProductSchema, type SchemaType } from "./schema";
 import type { TProductEntity } from "./types";
+import { useProducts } from "./api/get-products";
 
 const AddProduct = ({
 	product,
 	isEdit = false,
-}: { product?: TProductEntity; isEdit?: boolean }) => {
+	refetch,
+}: { product?: TProductEntity; isEdit?: boolean; refetch: () => void }) => {
 	const { t } = useTranslation();
-	const { data, isLoading, refetch } = useCategories();
+	const { data, isLoading } = useCategories();
 	const { setPage } = useProductStore();
 	const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -81,14 +83,21 @@ const AddProduct = ({
 	];
 
 	const addCarMutation = useAddProduct({
+		type: isEdit ? "edit" : "add",
 		mutationConfig: {
 			onSuccess: () => {
-				showToast("success", "Product added successfully");
+				showToast(
+					"success",
+					isEdit
+						? "Product Updated Successfully"
+						: "Product Added Successfully",
+				);
+
 				setSheetOpen(false);
 				setTimeout(() => {
 					setPage(1);
 					refetch();
-				}, 1000);
+				}, 500);
 			},
 			// biome-ignore lint/suspicious/noExplicitAny: global error
 			onError: (error: any) => {
@@ -106,9 +115,10 @@ const AddProduct = ({
 			price: Number(values.price),
 			categoryId: Number(values.categoryId),
 			images: [values.image],
+			id: isEdit ? product?.id : undefined,
 		};
 
-		addCarMutation.mutate({ data });
+		addCarMutation.mutate({ data, type: isEdit ? "edit" : "add" });
 	};
 	return (
 		<Sheet open={sheetOpen} onOpenChange={setSheetOpen}>

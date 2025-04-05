@@ -54,6 +54,8 @@ const Products = () => {
 
 	const tableData = data;
 
+	console.log("tableData", tableData);
+
 	const deleteMutation = useDeleteProduct({
 		productId: modalConfig?.productId,
 		queryConfig: {
@@ -88,7 +90,7 @@ const Products = () => {
 								isLoading={isFetching && !isLoading}
 							/>
 
-							<AddProduct />
+							<AddProduct refetch={refetch} />
 							{/* <div> */}
 							<Button
 								className="flex h-auto items-center justify-center gap-2 rounded-full p-4"
@@ -272,7 +274,11 @@ const Products = () => {
 											</Button>
 
 											{/* edit is same as the add */}
-											<AddProduct product={row.original} isEdit={true} />
+											<AddProduct
+												product={row.original}
+												isEdit={true}
+												refetch={refetch}
+											/>
 
 											<Button
 												className="bg-transparent text-red-200 hover:bg-transparent hover:text-red-500"

@@ -7,19 +7,27 @@ import type { TProductEntity } from "../types";
 
 export const addProduct = ({
 	data,
+	type,
 }: {
 	data: TProductEntity;
+	type: "add" | "edit";
 }): Promise<TProductEntity> => {
-	return api.post("/products", data);
+	// return api.post("/products", data);
+	if (type === "add") {
+		return api.post("/products", data);
+	}
+	return api.put(`/products/${data.id}`, data);
 };
 
 type UseAddProductOptions = {
 	mutationConfig?: MutationConfig<typeof addProduct>;
+	type: "add" | "edit";
 };
 
 export const useAddProduct = ({
 	mutationConfig,
-}: UseAddProductOptions = {}) => {
+	type,
+}: UseAddProductOptions) => {
 	const queryClient = useQueryClient();
 
 	const { onSuccess, ...restConfig } = mutationConfig || {};

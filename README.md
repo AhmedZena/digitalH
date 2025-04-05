@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧩 DigitalH - CRUD Dashboard Challenge
 
-## Getting Started
+A modern, full-featured **CRUD Operations Dashboard** built with **Next.js**, **Shadcn UI**, **NextAuth.js**, and **Zustand**. This project was developed as a solution for a frontend challenge focusing on advanced state management, authentication, and Reusable components.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This dashboard allows users to manage a list of products with full CRUD functionality:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- ✅ Create new products  
+- 🔍 Read product details  
+- ✏️ Update existing products  
+- 🗑️ Delete products  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+It also includes features like filtering, sorting, search, and pagination to improve usability and performance.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📌 Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Category            | Tools & Libraries                                                                 |
+|---------------------|------------------------------------------------------------------------------------|
+| **Framework**        | [Next.js](https://nextjs.org)                                                     |
+| **Design System**    | [Shadcn UI](https://ui.shadcn.com/) using [Radix UI](https://www.radix-ui.com/)  |
+| **Authentication**   | [NextAuth.js](https://next-auth.js.org/) with Prisma Adapter                     |
+| **State Management** | [Zustand](https://github.com/pmndrs/zustand)                                      |
+| **API & HTTP**       | [Axios](https://axios-http.com/) with interceptors                               |
+| **Forms & Validation**| [React Hook Form](https://react-hook-form.com/) + [Zod](https://github.com/colinhacks/zod) |
+| **Internationalization** | [i18next](https://www.i18next.com/) + `react-i18next`                           |
+| **Styling**          | Tailwind CSS + `tailwind-variants`, `tw-animate-css`, `clsx`                     |
+| **Date Handling**    | [Day.js](https://day.js.org/)                                                     |
+| **Utilities**        | `react-select`, `react-toastify`, `react-medium-image-zoom`, `xlsx`              |
+| **Types**            | TypeScript                                                                        |
+| **Dev Tools**        | Storybook, Biome, TypeScript, ESLint                                              |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## ✨ Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🔐 Authentication
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Users can log in using Google or GitHub accounts
+- Session management with JWT tokens
+- Uses NextAuth.js with Prisma adapter for scalability
+- Redirect to dashboard after successful login
+- Graceful handling of login errors
+- Logout functionality
+- protected routes for dashboard access
+
+### 📊 Dashboard
+
+- View products in a table with:
+  - Actions: Edit | Delete | View Details
+  - Hover & interactive animations
+  - Search by Title
+  - Pagination
+  - Sorting
+  - Filter by Category and Exact Price
+
+### ➕ Add Product
+
+- Modal to add new products
+- Form validation using Zod
+- Uses `react-hook-form`
+
+### ✏️ Edit Product
+
+- Edit existing product using same modal as Add Product
+- Form pre-filled with product data
+- Validated before submission
+
+### 🗑️ Delete Product
+
+- Confirmation modal before delete
+- Deletes from mock API
+
+### 🔍 View Details
+
+- Opens modal with full product info
+
+---
+
+## 🔗 API Mock
+
+Mock API used:  
+👉 [https://fakeapi.platzi.com/](https://fakeapi.platzi.com/)
+
+
+---
